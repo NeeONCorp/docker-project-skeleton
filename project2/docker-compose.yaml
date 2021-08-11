@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  php-apache2:
+    build: ./apache2
+    container_name: project2-php-apache2
+    ports:
+      - "80:80"
+#    volumes:
+#      - ./src:/var/www/html
+    environment:
+      - MONGO_URL=mongodb://root:example@mongodb:27017
+    depends_on:
+      - mongodb
+    networks:
+      - project2-netowrk
+
+  mongodb:
+    build: ./mongodb
+    container_name: project2-mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - project2-netowrk
+
+networks:
+  project2-netowrk:
+    driver: bridge
